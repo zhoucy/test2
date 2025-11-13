@@ -10,9 +10,9 @@ HHV/LLV/COUNT使用了rolling函数，性能极差，慎用。
 
 """
 import numpy as np
-import talib
 import time
 import func
+import holidays
 from func_TDX import rolling_window, REF, MA, SMA, HHV, LLV, COUNT, EXIST, CROSS, BARSLAST
 from rich import print
 

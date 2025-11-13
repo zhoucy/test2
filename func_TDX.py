@@ -35,9 +35,8 @@ def MA(value, day) -> float:
     返回当前周期的简单移动平均值。传入可以是列表或序列类型。传出是当前周期的简单移动平均具体值。
     :rtype: float
     """
-    import talib
-    # result = statistics.mean(value[-day:])
-    result = talib.SMA(value, day).iat[-1]
+    # 使用pandas的rolling和mean方法实现简单移动平均
+    result = value.rolling(window=day).mean().iat[-1]
     return result
 
 
@@ -45,9 +44,8 @@ def SMA(value, day):
     """
     返回简单移动平均序列。传入可以是列表或序列类型。传出是历史到当前周期为止的简单移动平均序列。
     """
-    import talib
-    # result = statistics.mean(value[-day:])
-    result = talib.SMA(value, day)
+    # 使用pandas的rolling和mean方法实现简单移动平均
+    result = value.rolling(window=day).mean()
     return result
 
 
