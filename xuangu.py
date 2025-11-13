@@ -88,6 +88,15 @@ def run_celue1(stocklist, df_today, tqdm_position=None):
     return stocklist
 
 
+def test(stockcode,startDate):
+    
+    pklfile = csvdaypath + os.sep + stockcode + '.pkl'
+    df_stock = pd.read_pickle(pklfile)
+    df_stock['date'] = pd.to_datetime(df_stock['date'], format='%Y-%m-%d')  # 转为时间格式
+    df_stock.set_index('date', drop=False, inplace=True)  # 时间为索引。方便与另外复权的DF表对齐合并
+    celue2 = CeLue.策略验证(df_stock, start_date=startDate)
+    return celue2
+
 def run_celue2(stocklist, HS300_信号, df_gbbq, df_today, tqdm_position=None):
     if 'single' in sys.argv[1:]:
         tq = tqdm(stocklist[:])

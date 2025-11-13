@@ -34,6 +34,49 @@ def 策略HS300(df_hs300, start_date='', end_date=''):
     HS300_信号 = ~(HS300_当日涨幅 < -1.5) & ~(HS300_当日涨幅 > 1.5)
     return HS300_信号
 
+def 策略验证(df, start_date=''):
+    """
+    HS300信号的作用是，当信号是0时，当日不买股票，1时买入。传出
+    :param start_date:
+    :param end_date:
+    :return: 布尔序列
+    """
+    if start_date == '':
+        start_date = df.index[0]  # 设置为df第一个日期
+  
+    end_date = checkHoliday(start_date, 30)
+
+    df = df.loc[start_date:end_date]
+    C = df['close']
+    return C
+
+
+CN_HOLIDAYS = holidays.CountryHoliday('CN')
+
+
+def checkHoliday(start_date, day) -> bool:
+    """
+    判断基准日期加偏移天数后是否为中国法定节假日
+    :param start_date: 基准日期，格式必须为 "%Y-%m-%d"（如"2025-10-01"）
+    :param day: 偏移天数（整数，可正可负）
+    :return: 是节假日返回True，非节假日返回False
+    """
+    try:
+        # 将基准日期转为pandas Timestamp
+        check_date = pd.to_datetime(start_date, format='%Y-%m-%d')
+        # 计算目标日期（基准日期 + 偏移天数）
+        new_date = check_date + pd.DateOffset(days=day)
+        # 转为datetime.date类型，与holidays库的日期类型统一
+        target_date = new_date.date()
+        is_weekend = target_date.weekday() in (5, 6)  # 5=周六，6=周日
+
+        # 判断是否为法定节假日（含调休的节假日，不含调休上班的周末）
+        is_legal_holiday = new_date in CN_HOLIDAYS
+
+        # 只要是周末或节假日，就返回True（需要过滤）
+        return is_weekend or is_legal_holiday
+    except ValueError:
+        raise ValueError(f"start_date格式错误，请使用'%Y-%m-%d'，输入值为：{start_date}")
 
 def 策略1(df, start_date='', end_date='', mode=None):
     """
