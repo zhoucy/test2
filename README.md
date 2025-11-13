@@ -1,5 +1,5 @@
 # 说明文档
-
+我只是一个搬运工，感谢这位朋友的无私分享
 项目无Wiki，此说明文档包含了项目所有相关内容。包括项目介绍、使用说明等。
 
 GitHub主站：https://github.com/wkingnet/stock-analysis
